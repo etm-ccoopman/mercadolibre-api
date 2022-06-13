@@ -36,6 +36,22 @@ module.exports = app => {
                         });
                     }
                 });
+
+                const categories = obj.categories;
+                let duplicados = [];
+                let no_duplicados = [];
+                const tempArray = [...categories].sort();
+
+                for (let i = 0; i < tempArray.length; i++) {
+                    if (tempArray[i + 1] === tempArray[i]) {
+                        duplicados.push(tempArray[i]);
+                    } else {
+                        if (!duplicados.includes(tempArray[i])) {
+                            no_duplicados.push(tempArray[i]);
+                        }
+                    }
+                }
+                obj.categories = duplicados.concat(no_duplicados);
             }
             res.json({
                 state: true
@@ -74,6 +90,7 @@ module.exports = app => {
                     , condition: results.data.condition
                     , free_shipping: results.data.shipping.free_shipping
                     , sold_quantity: results.data.sold_quantity
+                    , categories: [results.data.category_id]
                 }
             }
             return {
